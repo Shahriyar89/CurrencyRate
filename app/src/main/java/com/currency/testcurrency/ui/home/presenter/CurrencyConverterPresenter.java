@@ -1,4 +1,4 @@
-package com.currency.testcurrency.converter.home.presenter;
+package com.currency.testcurrency.ui.home.presenter;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,13 +6,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.currency.DBManager;
+import com.currency.testcurrency.repository.local.db.Favorite;
 import com.currency.testcurrency.BuildConfig;
-import com.currency.testcurrency.converter.home.CurrencyConverterContractor;
-import com.currency.testcurrency.converter.home.model.Currency;
-import com.currency.testcurrency.network.CurrencyServices;
-import com.currency.testcurrency.network.RetrofitClient;
+import com.currency.testcurrency.ui.home.CurrencyConverterContractor;
+import com.currency.testcurrency.ui.home.model.Currency;
 import com.currency.testcurrency.network.Services;
-import com.currency.testcurrency.repository.CurrencyRateRepository;
+import com.currency.testcurrency.repository.remote.CurrencyRateRepository;
 
 import java.util.HashMap;
 
@@ -31,13 +30,13 @@ public class CurrencyConverterPresenter implements CurrencyConverterContractor.P
     private CurrencyRateRepository repository;
     private Context context;
 
-    public void setPresenter(CurrencyConverterContractor.View view, Services services, CurrencyRateRepository currencyRepository,Context context) {
+    public void setPresenter(CurrencyConverterContractor.View view, Services services, CurrencyRateRepository currencyRepository, Context context) {
         this.view = view;
         this.service = services;
 
         disposable = new CompositeDisposable();
         repository = currencyRepository;
-        this.context=context;
+        this.context = context;
 
     }
 
@@ -49,7 +48,6 @@ public class CurrencyConverterPresenter implements CurrencyConverterContractor.P
         queryMap.put("to", to);
         queryMap.put("amount", amount);
         view.showProgress();
-        CurrencyServices currencyServices = RetrofitClient.getInstance().create(CurrencyServices.class);
         Observable<CurrencyResponse> observable = repository.getCurrencyRate(queryMap).
                 subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -64,10 +62,9 @@ public class CurrencyConverterPresenter implements CurrencyConverterContractor.P
             public void onNext(@NonNull CurrencyResponse response) {
                 view.onConverterResult(response.result);
                 DBManager dbManager = new DBManager(context);
-                com.currencies.local.db.Currency currency = new com.currencies.local.db.Currency();
-                currency.setBase("basee");
-                dbManager.insertChat(currency);
-               Log.e("heree",String.valueOf(dbManager.getList().size()));
+                Favorite favorite = new Favorite(null, 1, from, to, response.result.rate);
+                dbManager.insertChat(favorite);
+                Log.e("heree", String.valueOf(dbManager.getFavoriteList().size()));
                 view.dismissProgress();
             }
 

@@ -1,4 +1,4 @@
-package com.currency.testcurrency.converter.favorite;
+package com.currency.testcurrency.ui.favorite;
 
 public interface FavoriteCurrencyContractor {
     interface Presenter{

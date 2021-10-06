@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">TestCurrency</string>
-    <string name="from_currency">From currency</string>
+    <string name="from_currency">From</string>
+    <string name="to_currency">To</string>
+    <string name="currency_rate">Rate</string>
+
     <string name="input_error_message">Please enter amount</string>
     <string-array name="currency_codes">
         <item>AZN</item>

@@ -3,6 +3,7 @@ package com.currency.testcurrency;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,13 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.currency.testcurrency.converter.home.CurrencyConverterContractor;
-import com.currency.testcurrency.converter.home.presenter.CurrencyConverterPresenter;
-import com.currency.testcurrency.converter.home.presenter.Result;
-import com.currency.testcurrency.network.Services;
-import com.currency.testcurrency.repository.CurrencyRateRepositoryImpl;
 
-import org.greenrobot.greendao.database.Database;
+import com.currency.testcurrency.ui.favorite.view.FavoriteCurrencyActivity;
+import com.currency.testcurrency.ui.home.CurrencyConverterContractor;
+import com.currency.testcurrency.ui.home.presenter.CurrencyConverterPresenter;
+import com.currency.testcurrency.ui.home.presenter.Result;
+import com.currency.testcurrency.network.Services;
+import com.currency.testcurrency.repository.remote.CurrencyRateRepositoryImpl;
 
 import javax.inject.Inject;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements CurrencyConverter
 
         progressBar = findViewById(R.id.progressBar);
         Button btnConvert = findViewById(R.id.btnConvert);
+        Button btnFavorites = findViewById(R.id.btnFavorites);
         Spinner fromSpinner = findViewById(R.id.spFromCurrency);
         Spinner toSpinner = findViewById(R.id.spToCurrency);
         EditText amount = findViewById(R.id.etFrom);
@@ -56,6 +58,15 @@ public class MainActivity extends AppCompatActivity implements CurrencyConverter
                 } else {
                     Toast.makeText(context, getString(R.string.input_error_message), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        btnFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context, FavoriteCurrencyActivity.class);
+                startActivity(intent);
+
             }
         });
     }
