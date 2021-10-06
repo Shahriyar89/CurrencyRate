@@ -11,24 +11,31 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.currency.testcurrency.converter.home.CurrencyConverterContractor;
-import com.currency.testcurrency.converter.home.model.Root;
 import com.currency.testcurrency.converter.home.presenter.CurrencyConverterPresenter;
 import com.currency.testcurrency.converter.home.presenter.Result;
+import com.currency.testcurrency.network.Services;
+import com.currency.testcurrency.repository.CurrencyRateRepositoryImpl;
+
+import org.greenrobot.greendao.database.Database;
+
+import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements CurrencyConverterContractor.View {
-    private Root result;
+    @Inject
+    public Services service;
     ProgressBar progressBar;
     TextView resultAmount;
     Context context = this;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CurrencyConverterPresenter presenter = new CurrencyConverterPresenter();
-        presenter.setView(this);
+        CurrencyRateRepositoryImpl repositoryImpl=new CurrencyRateRepositoryImpl();
+        presenter.setPresenter(this, service, repositoryImpl,context);
 
         progressBar = findViewById(R.id.progressBar);
         Button btnConvert = findViewById(R.id.btnConvert);
@@ -36,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements CurrencyConverter
         Spinner toSpinner = findViewById(R.id.spToCurrency);
         EditText amount = findViewById(R.id.etFrom);
         resultAmount = findViewById(R.id.tvResult);
+
         btnConvert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements CurrencyConverter
                 }
             }
         });
-
     }
 
     @Override
@@ -70,8 +77,6 @@ public class MainActivity extends AppCompatActivity implements CurrencyConverter
 
     @Override
     public void onConverterResult(Result result) {
-//        double rate=result.getRate();
-//        double input=
         resultAmount.setText(String.valueOf(result.getTotalResult()));
 
     }
