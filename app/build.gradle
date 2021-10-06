@@ -15,7 +15,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "BASEURL", "\"https://api.fastforex.io/\""
-        buildConfigField ("String" , "API_KEY", API_KEY)
+        buildConfigField("String", "API_KEY", API_KEY)
     }
 
     buildTypes {
@@ -41,6 +41,15 @@ dependencies {
     //
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
+
+    //green dao
+    implementation 'org.greenrobot:greendao:3.2.0'
+    //dagger2
+    implementation 'com.google.dagger:dagger-android:2.35.1'
+    implementation 'com.google.dagger:dagger-android-support:2.20'
+    // if you use the support libraries
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.29.1'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.35'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

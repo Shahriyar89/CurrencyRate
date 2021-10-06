@@ -1,40 +1,56 @@
 package com.currency.testcurrency.converter.home.presenter;
 
+import android.content.Context;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import com.currency.DBManager;
 import com.currency.testcurrency.BuildConfig;
 import com.currency.testcurrency.converter.home.CurrencyConverterContractor;
 import com.currency.testcurrency.converter.home.model.Currency;
-import com.currency.testcurrency.network.ApiCall;
+import com.currency.testcurrency.network.CurrencyServices;
 import com.currency.testcurrency.network.RetrofitClient;
+import com.currency.testcurrency.network.Services;
+import com.currency.testcurrency.repository.CurrencyRateRepository;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class CurrencyConverterPresenter implements CurrencyConverterContractor.Presenter {
     private CurrencyConverterContractor.View view;
+    private Services service;
+    private CompositeDisposable disposable;
+    private String API_KEY = BuildConfig.API_KEY;
+    private CurrencyRateRepository repository;
+    private Context context;
 
-    public void setView(CurrencyConverterContractor.View view) {
+    public void setPresenter(CurrencyConverterContractor.View view, Services services, CurrencyRateRepository currencyRepository,Context context) {
         this.view = view;
+        this.service = services;
+
+        disposable = new CompositeDisposable();
+        repository = currencyRepository;
+        this.context=context;
 
     }
 
     @Override
     public void getCurrencyConverter(String from, String to, Double amount) {
-        HashMap<String,Object > queryMap= new HashMap<>();
-        queryMap.put("api_key" ,BuildConfig.API_KEY);
-        queryMap.put("from",from);
-        queryMap.put("to",to);
-        queryMap.put("amount",amount);
+        HashMap<String, Object> queryMap = new HashMap<>();
+        queryMap.put("api_key", BuildConfig.API_KEY);
+        queryMap.put("from", from);
+        queryMap.put("to", to);
+        queryMap.put("amount", amount);
         view.showProgress();
-        ApiCall apiCall = RetrofitClient.getInstance().create(ApiCall.class);
-        Observable<CurrencyResponse> observable = apiCall.getConvertCurrency(queryMap).
+        CurrencyServices currencyServices = RetrofitClient.getInstance().create(CurrencyServices.class);
+        Observable<CurrencyResponse> observable = repository.getCurrencyRate(queryMap).
                 subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 
@@ -46,8 +62,13 @@ public class CurrencyConverterPresenter implements CurrencyConverterContractor.P
 
             @Override
             public void onNext(@NonNull CurrencyResponse response) {
-              view.onConverterResult(response.result);
-              view.dismissProgress();
+                view.onConverterResult(response.result);
+                DBManager dbManager = new DBManager(context);
+                com.currencies.local.db.Currency currency = new com.currencies.local.db.Currency();
+                currency.setBase("basee");
+                dbManager.insertChat(currency);
+               Log.e("heree",String.valueOf(dbManager.getList().size()));
+                view.dismissProgress();
             }
 
             @Override
@@ -62,9 +83,31 @@ public class CurrencyConverterPresenter implements CurrencyConverterContractor.P
 
             }
         });
-
-
     }
+
+    @Override
+    public void getCurrencyRate(String from, String to, Double amount) {
+        view.showProgress();
+        Observable<CurrencyResponse> observable = service.getCurrencyConverter(
+                from, to, amount, new Services.GetCurrencyCallBack() {
+                    @Override
+                    public void onSuccess(CurrencyResponse currencyResponse) {
+                        view.dismissProgress();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.dismissProgress();
+                        view.onError(e);
+                    }
+                });
+        disposable.add((Disposable) observable);
+    }
+
+    private void getFetchRate() {
+        view.showProgress();
+    }
+
 
     private Double getRateForCurrency(String currency, Currency rates) {
         switch (currency) {

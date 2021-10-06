@@ -5,6 +5,7 @@ import com.currency.testcurrency.converter.home.presenter.Result;
 public interface CurrencyConverterContractor {
      interface Presenter {
           void getCurrencyConverter(String from, String to, Double amount);
+          void  getCurrencyRate( String from, String to, Double amount);
      }
      interface  View{
          void showProgress();
