@@ -1,6 +1,5 @@
-package com.currency.testcurrency.converter.home.model;
+package com.currency.testcurrency.ui.home.model;
 
-import com.currency.testcurrency.converter.home.model.Currency;
 import com.google.gson.annotations.SerializedName;
 
 import org.greenrobot.greendao.annotation.Entity;

@@ -1,6 +1,6 @@
-package com.currency.testcurrency.repository;
+package com.currency.testcurrency.repository.remote;
 
-import com.currency.testcurrency.converter.home.presenter.CurrencyResponse;
+import com.currency.testcurrency.ui.home.presenter.CurrencyResponse;
 
 import java.util.HashMap;
 
