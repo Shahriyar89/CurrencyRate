@@ -1,6 +1,6 @@
 package com.currency.testcurrency.repository.remote;
 
-import com.currency.testcurrency.ui.home.presenter.CurrencyResponse;
+import com.currency.testcurrency.ui.home.model.CurrencyResponse;
 import com.currency.testcurrency.network.CurrencyServices;
 import com.currency.testcurrency.network.RetrofitClient;
 

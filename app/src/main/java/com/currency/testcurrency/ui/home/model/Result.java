@@ -1,4 +1,4 @@
-package com.currency.testcurrency.ui.home.presenter;
+package com.currency.testcurrency.ui.home.model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -12,6 +12,7 @@ import com.currency.testcurrency.ui.home.CurrencyConverterContractor;
 import com.currency.testcurrency.ui.home.model.Currency;
 import com.currency.testcurrency.network.Services;
 import com.currency.testcurrency.repository.remote.CurrencyRateRepository;
+import com.currency.testcurrency.ui.home.model.CurrencyResponse;
 
 import java.util.HashMap;
 
@@ -43,7 +44,7 @@ public class CurrencyConverterPresenter implements CurrencyConverterContractor.P
     @Override
     public void getCurrencyConverter(String from, String to, Double amount) {
         HashMap<String, Object> queryMap = new HashMap<>();
-        queryMap.put("api_key", BuildConfig.API_KEY);
+        queryMap.put("api_key", API_KEY);
         queryMap.put("from", from);
         queryMap.put("to", to);
         queryMap.put("amount", amount);
@@ -99,10 +100,6 @@ public class CurrencyConverterPresenter implements CurrencyConverterContractor.P
                     }
                 });
         disposable.add((Disposable) observable);
-    }
-
-    private void getFetchRate() {
-        view.showProgress();
     }
 
 

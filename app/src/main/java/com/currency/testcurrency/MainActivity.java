@@ -2,6 +2,7 @@ package com.currency.testcurrency;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import android.widget.Toast;
 import com.currency.testcurrency.ui.favorite.view.FavoriteCurrencyActivity;
 import com.currency.testcurrency.ui.home.CurrencyConverterContractor;
 import com.currency.testcurrency.ui.home.presenter.CurrencyConverterPresenter;
-import com.currency.testcurrency.ui.home.presenter.Result;
+import com.currency.testcurrency.ui.home.model.Result;
 import com.currency.testcurrency.network.Services;
 import com.currency.testcurrency.repository.remote.CurrencyRateRepositoryImpl;
 
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements CurrencyConverter
     public Services service;
     ProgressBar progressBar;
     TextView resultAmount;
+    EditText amount;
+    Spinner fromSpinner, toSpinner;
     Context context = this;
 
 
@@ -35,15 +38,15 @@ public class MainActivity extends AppCompatActivity implements CurrencyConverter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         CurrencyConverterPresenter presenter = new CurrencyConverterPresenter();
-        CurrencyRateRepositoryImpl repositoryImpl=new CurrencyRateRepositoryImpl();
-        presenter.setPresenter(this, service, repositoryImpl,context);
+        CurrencyRateRepositoryImpl repositoryImpl = new CurrencyRateRepositoryImpl();
+        presenter.setPresenter(this, service, repositoryImpl, context);
 
         progressBar = findViewById(R.id.progressBar);
         Button btnConvert = findViewById(R.id.btnConvert);
         Button btnFavorites = findViewById(R.id.btnFavorites);
-        Spinner fromSpinner = findViewById(R.id.spFromCurrency);
-        Spinner toSpinner = findViewById(R.id.spToCurrency);
-        EditText amount = findViewById(R.id.etFrom);
+        fromSpinner = findViewById(R.id.spFromCurrency);
+        toSpinner = findViewById(R.id.spToCurrency);
+        amount = findViewById(R.id.etFrom);
         resultAmount = findViewById(R.id.tvResult);
 
         btnConvert.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements CurrencyConverter
         btnFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(context, FavoriteCurrencyActivity.class);
+                Intent intent = new Intent(context, FavoriteCurrencyActivity.class);
                 startActivity(intent);
 
             }
@@ -86,9 +89,11 @@ public class MainActivity extends AppCompatActivity implements CurrencyConverter
         resultAmount.setText(String.valueOf(e.getMessage()));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onConverterResult(Result result) {
-        resultAmount.setText(String.valueOf(result.getTotalResult()));
+        resultAmount.setText(Double.parseDouble(amount.getText().toString())+" " + fromSpinner.getSelectedItem() + " = "+result.getTotalResult()+ " "+toSpinner.getSelectedItem());
+
 
     }
 }
