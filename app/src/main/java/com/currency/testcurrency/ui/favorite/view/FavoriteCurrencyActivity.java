@@ -22,13 +22,15 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class FavoriteCurrencyActivity extends AppCompatActivity implements FavoriteRecyclerViewAdapter.ItemClickListener, FavoriteCurrencyContractor.View {
     Context context = this;
-    private DBManager dbManager;
     private FavoriteRecyclerViewAdapter adapter;
     TextView fromCurrency, toCurrency, totalResult;
     EditText inputAmount;
     RecyclerView favoriteList;
+    @Inject
     FavoriteCurrencyPresenter presenter;
     private List<Favorite> favorites;
 
@@ -36,7 +38,6 @@ public class FavoriteCurrencyActivity extends AppCompatActivity implements Favor
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_currency);
-        //dbManager = new DBManager(context);
         presenter = new FavoriteCurrencyPresenter(context, this);
         presenter.getFavoriteCurrencies();
         fromCurrency = findViewById(R.id.txtFromCurrency);
