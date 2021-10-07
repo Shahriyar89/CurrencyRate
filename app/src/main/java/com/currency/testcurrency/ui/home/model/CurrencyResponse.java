@@ -1,5 +1,6 @@
-package com.currency.testcurrency.ui.home.presenter;
+package com.currency.testcurrency.ui.home.model;
 
+import com.currency.testcurrency.ui.home.model.Result;
 import com.google.gson.annotations.SerializedName;
 
 public class CurrencyResponse {

@@ -2,7 +2,7 @@ package com.currency.testcurrency.network;
 
 
 import com.currency.testcurrency.ui.home.model.CurrencyFetchResponse;
-import com.currency.testcurrency.ui.home.presenter.CurrencyResponse;
+import com.currency.testcurrency.ui.home.model.CurrencyResponse;
 
 import java.util.HashMap;
 

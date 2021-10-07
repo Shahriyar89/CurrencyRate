@@ -1,6 +1,6 @@
 package com.currency.testcurrency.ui.home;
 
-import com.currency.testcurrency.ui.home.presenter.Result;
+import com.currency.testcurrency.ui.home.model.Result;
 
 public interface CurrencyConverterContractor {
      interface Presenter {
