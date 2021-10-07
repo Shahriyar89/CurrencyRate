@@ -14,40 +14,40 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.currency.testcurrency.base.BaseActivity;
 import com.currency.testcurrency.ui.favorite.view.FavoriteCurrencyActivity;
 import com.currency.testcurrency.ui.home.CurrencyConverterContractor;
 import com.currency.testcurrency.ui.home.presenter.CurrencyConverterPresenter;
 import com.currency.testcurrency.ui.home.model.Result;
-import com.currency.testcurrency.network.Services;
 import com.currency.testcurrency.repository.remote.CurrencyRateRepositoryImpl;
 
-import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity implements CurrencyConverterContractor.View {
-    @Inject
-    public Services service;
+public class MainActivity extends BaseActivity implements CurrencyConverterContractor.View {
     ProgressBar progressBar;
     TextView resultAmount;
     EditText amount;
     Spinner fromSpinner, toSpinner;
     Context context = this;
+    CurrencyConverterPresenter presenter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        CurrencyConverterPresenter presenter = new CurrencyConverterPresenter();
         CurrencyRateRepositoryImpl repositoryImpl = new CurrencyRateRepositoryImpl();
-        presenter.setPresenter(this, service, repositoryImpl, context);
+        CurrencyConverterPresenter presenter = new CurrencyConverterPresenter(this, repositoryImpl, context);
+        presenter.setPresenter(this, repositoryImpl, context);
 
         progressBar = findViewById(R.id.progressBar);
+        setProgressBar(progressBar);
         Button btnConvert = findViewById(R.id.btnConvert);
         Button btnFavorites = findViewById(R.id.btnFavorites);
         fromSpinner = findViewById(R.id.spFromCurrency);
         toSpinner = findViewById(R.id.spToCurrency);
         amount = findViewById(R.id.etFrom);
         resultAmount = findViewById(R.id.tvResult);
+
 
         btnConvert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,20 +74,7 @@ public class MainActivity extends AppCompatActivity implements CurrencyConverter
         });
     }
 
-    @Override
-    public void showProgress() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
 
-    @Override
-    public void dismissProgress() {
-        progressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onError(Throwable e) {
-        resultAmount.setText(String.valueOf(e.getMessage()));
-    }
 
     @SuppressLint("SetTextI18n")
     @Override

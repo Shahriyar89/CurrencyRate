@@ -10,11 +10,12 @@ import com.currency.testcurrency.repository.local.db.Favorite;
 import com.currency.testcurrency.BuildConfig;
 import com.currency.testcurrency.ui.home.CurrencyConverterContractor;
 import com.currency.testcurrency.ui.home.model.Currency;
-import com.currency.testcurrency.network.Services;
 import com.currency.testcurrency.repository.remote.CurrencyRateRepository;
 import com.currency.testcurrency.ui.home.model.CurrencyResponse;
 
 import java.util.HashMap;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -25,15 +26,19 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CurrencyConverterPresenter implements CurrencyConverterContractor.Presenter {
     private CurrencyConverterContractor.View view;
-    private Services service;
     private CompositeDisposable disposable;
     private String API_KEY = BuildConfig.API_KEY;
     private CurrencyRateRepository repository;
     private Context context;
 
-    public void setPresenter(CurrencyConverterContractor.View view, Services services, CurrencyRateRepository currencyRepository, Context context) {
+    public CurrencyConverterPresenter(CurrencyConverterContractor.View view, CurrencyRateRepository repository, Context context) {
         this.view = view;
-        this.service = services;
+        this.repository = repository;
+        this.context = context;
+    }
+
+    public void setPresenter(CurrencyConverterContractor.View view, CurrencyRateRepository currencyRepository, Context context) {
+        this.view = view;
 
         disposable = new CompositeDisposable();
         repository = currencyRepository;
@@ -65,7 +70,6 @@ public class CurrencyConverterPresenter implements CurrencyConverterContractor.P
                 DBManager dbManager = new DBManager(context);
                 Favorite favorite = new Favorite(null, 1, from, to, response.result.rate);
                 dbManager.insertChat(favorite);
-                Log.e("heree", String.valueOf(dbManager.getFavoriteList().size()));
                 view.dismissProgress();
             }
 
@@ -82,26 +86,6 @@ public class CurrencyConverterPresenter implements CurrencyConverterContractor.P
             }
         });
     }
-
-    @Override
-    public void getCurrencyRate(String from, String to, Double amount) {
-        view.showProgress();
-        Observable<CurrencyResponse> observable = service.getCurrencyConverter(
-                from, to, amount, new Services.GetCurrencyCallBack() {
-                    @Override
-                    public void onSuccess(CurrencyResponse currencyResponse) {
-                        view.dismissProgress();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        view.dismissProgress();
-                        view.onError(e);
-                    }
-                });
-        disposable.add((Disposable) observable);
-    }
-
 
     private Double getRateForCurrency(String currency, Currency rates) {
         switch (currency) {

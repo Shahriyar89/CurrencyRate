@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.currency.DBManager;
 import com.currency.testcurrency.R;
+import com.currency.testcurrency.base.BaseActivity;
 import com.currency.testcurrency.repository.local.db.Favorite;
 import com.currency.testcurrency.ui.favorite.FavoriteCurrencyContractor;
 import com.currency.testcurrency.ui.favorite.presenter.FavoriteCurrencyPresenter;
@@ -24,7 +25,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class FavoriteCurrencyActivity extends AppCompatActivity implements FavoriteRecyclerViewAdapter.ItemClickListener, FavoriteCurrencyContractor.View {
+public class FavoriteCurrencyActivity extends BaseActivity implements FavoriteRecyclerViewAdapter.ItemClickListener, FavoriteCurrencyContractor.View {
     Context context = this;
     private FavoriteRecyclerViewAdapter adapter;
     TextView fromCurrency, toCurrency, totalResult;
