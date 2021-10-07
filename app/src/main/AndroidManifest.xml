@@ -15,7 +15,7 @@
             android:name=".ui.favorite.view.FavoriteCurrencyActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.home.view.CurrencyConverterActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

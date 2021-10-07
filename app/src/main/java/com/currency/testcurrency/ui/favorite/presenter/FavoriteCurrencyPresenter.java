@@ -2,7 +2,7 @@ package com.currency.testcurrency.ui.favorite.presenter;
 
 import android.content.Context;
 
-import com.currency.DBManager;
+import com.currency.testcurrency.repository.local.DBManager;
 import com.currency.testcurrency.ui.favorite.FavoriteCurrencyContractor;
 
 public class FavoriteCurrencyPresenter implements FavoriteCurrencyContractor.Presenter {

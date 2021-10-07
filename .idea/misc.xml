@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.290625" />
+        <entry key="app/src/main/res/drawable/ic_baseline_star_rate_24.xml" value="0.2859375" />
         <entry key="app/src/main/res/layout/activity_favorite_currency.xml" value="0.2572463768115942" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2513586956521739" />
         <entry key="app/src/main/res/layout/recyclerview_row.xml" value="0.2791666666666667" />

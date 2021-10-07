@@ -1,11 +1,10 @@
 package com.currency.testcurrency.ui.home.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.currency.DBManager;
+import com.currency.testcurrency.repository.local.DBManager;
 import com.currency.testcurrency.repository.local.db.Favorite;
 import com.currency.testcurrency.BuildConfig;
 import com.currency.testcurrency.ui.home.CurrencyConverterContractor;
@@ -14,8 +13,6 @@ import com.currency.testcurrency.repository.remote.CurrencyRateRepository;
 import com.currency.testcurrency.ui.home.model.CurrencyResponse;
 
 import java.util.HashMap;
-
-import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -47,7 +44,7 @@ public class CurrencyConverterPresenter implements CurrencyConverterContractor.P
     }
 
     @Override
-    public void getCurrencyConverter(String from, String to, Double amount) {
+    public void getCurrencyConverter(String from, String to, Double amount,Boolean isFavorite) {
         HashMap<String, Object> queryMap = new HashMap<>();
         queryMap.put("api_key", API_KEY);
         queryMap.put("from", from);
@@ -67,9 +64,10 @@ public class CurrencyConverterPresenter implements CurrencyConverterContractor.P
             @Override
             public void onNext(@NonNull CurrencyResponse response) {
                 view.onConverterResult(response.result);
-                DBManager dbManager = new DBManager(context);
-                Favorite favorite = new Favorite(null, 1, from, to, response.result.rate);
-                dbManager.insertChat(favorite);
+                if (isFavorite) {
+                    Favorite favorite = new Favorite(null, from, to, response.result.rate);
+                    writeToDB(favorite);
+                }
                 view.dismissProgress();
             }
 
@@ -87,6 +85,11 @@ public class CurrencyConverterPresenter implements CurrencyConverterContractor.P
         });
     }
 
+
+    private void writeToDB(Favorite favorite){
+        DBManager dbManager = new DBManager(context);
+        dbManager.insertChat(favorite);
+    }
     private Double getRateForCurrency(String currency, Currency rates) {
         switch (currency) {
             case "CAD":

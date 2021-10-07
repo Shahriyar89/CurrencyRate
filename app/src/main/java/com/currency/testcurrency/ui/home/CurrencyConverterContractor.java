@@ -5,7 +5,7 @@ import com.currency.testcurrency.ui.home.model.Result;
 
 public interface CurrencyConverterContractor {
      interface Presenter extends BaseContractor.BasePresenter {
-          void getCurrencyConverter(String from, String to, Double amount);
+          void getCurrencyConverter(String from, String to, Double amount,Boolean isFavorite);
      }
      interface  View extends BaseContractor.BaseView {
 

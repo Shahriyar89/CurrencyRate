@@ -116,7 +116,6 @@ public class FavoriteDao extends AbstractDao<Favorite, Long> {
     public Favorite readEntity(Cursor cursor, int offset) {
         Favorite entity = new Favorite( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getInt(offset + 1), // currency_id
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // from
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // to
             cursor.isNull(offset + 4) ? null : cursor.getDouble(offset + 4) // rate

@@ -1,4 +1,4 @@
-package com.currency;
+package com.currency.testcurrency.repository.local;
 
 import android.content.Context;
 
@@ -24,7 +24,7 @@ public class DBManager {
     }
 
     public DBManager(Context context) {
-        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(context, "favorite_currencies.db");
+        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(context, "favorite_currency.db");
         mDaoSession = new DaoMaster(devOpenHelper.getWritableDatabase()).newSession();
         currencyDao = mDaoSession.getFavoriteDao();
     }
