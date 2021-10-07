@@ -1,6 +1,5 @@
 package com.currency.testcurrency.ui.favorite.view;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,23 +11,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.currency.DBManager;
 import com.currency.testcurrency.R;
+import com.currency.testcurrency.base.BaseActivity;
 import com.currency.testcurrency.repository.local.db.Favorite;
 import com.currency.testcurrency.ui.favorite.FavoriteCurrencyContractor;
 import com.currency.testcurrency.ui.favorite.presenter.FavoriteCurrencyPresenter;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
-public class FavoriteCurrencyActivity extends AppCompatActivity implements FavoriteRecyclerViewAdapter.ItemClickListener, FavoriteCurrencyContractor.View {
+import javax.inject.Inject;
+
+public class FavoriteCurrencyActivity extends BaseActivity implements FavoriteRecyclerViewAdapter.ItemClickListener, FavoriteCurrencyContractor.View {
     Context context = this;
-    private DBManager dbManager;
     private FavoriteRecyclerViewAdapter adapter;
     TextView fromCurrency, toCurrency, totalResult;
     EditText inputAmount;
     RecyclerView favoriteList;
+    @Inject
     FavoriteCurrencyPresenter presenter;
     private List<Favorite> favorites;
 
@@ -36,7 +35,6 @@ public class FavoriteCurrencyActivity extends AppCompatActivity implements Favor
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_currency);
-        //dbManager = new DBManager(context);
         presenter = new FavoriteCurrencyPresenter(context, this);
         presenter.getFavoriteCurrencies();
         fromCurrency = findViewById(R.id.txtFromCurrency);

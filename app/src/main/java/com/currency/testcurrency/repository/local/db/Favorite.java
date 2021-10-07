@@ -32,9 +32,8 @@ public class Favorite {
     }
 
     @Generated
-    public Favorite(Long id, int favoriteId, String from, String to, Double rate) {
+    public Favorite(Long id,  String from, String to, Double rate) {
         this.id = id;
-        this.currency_id = favoriteId;
         this.from = from;
         this.to = to;
         this.rate = rate;
